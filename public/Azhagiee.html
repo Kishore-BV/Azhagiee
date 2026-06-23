@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For You ❤️</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top, rgba(255, 45, 85, 0.22), transparent 35%),
+        linear-gradient(180deg, #060000, #180006 55%, #2b000b);
+      color: white;
+    }
+
+    .main-page,
+    .island-page {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .main-page {
+      position: relative;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .main-page h1 {
+      font-size: 2.4rem;
+      color: #ffd6dd;
+      margin-bottom: 10px;
+      animation: fadeDown 1.5s ease forwards;
+    }
+
+    .main-page p {
+      color: #ffc2cb;
+      font-size: 1rem;
+      margin-bottom: 28px;
+      animation: fadeDown 1.8s ease forwards;
+    }
+
+    .gif-box {
+      width: 280px;
+      height: 280px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow:
+        0 0 35px rgba(255, 40, 80, 0.35),
+        inset 0 0 25px rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .gif-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .tap-btn {
+      margin-top: 35px;
+      padding: 13px 30px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff4d6d, #9d0208);
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(255, 45, 85, 0.35);
+      transition: 0.3s ease;
+    }
+
+    .tap-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+    }
+
+    .island-page {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 12%, rgba(255, 160, 160, 0.35), transparent 18%),
+        linear-gradient(180deg, #33000d 0%, #5c0015 45%, #140004 100%);
+      z-index: 10;
+      transform: translateY(100%);
+      transition: 0.9s ease;
+      overflow: hidden;
+      padding: 22px;
+    }
+
+    .island-page.active {
+      transform: translateY(0);
+    }
+
+    .greeting {
+      position: absolute;
+      top: 35px;
+      text-align: center;
+      width: 100%;
+      padding: 0 20px;
+      z-index: 5;
+    }
+
+    .greeting h2 {
+      font-size: 2.2rem;
+      color: #ffe1e7;
+      margin-bottom: 8px;
+      text-shadow: 0 0 18px rgba(255, 120, 140, 0.5);
+    }
+
+    .greeting p {
+      color: #ffc7d0;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .moon {
+      position: absolute;
+      top: 115px;
+      right: 18%;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffd6dd, #ff7a90);
+      box-shadow: 0 0 45px rgba(255, 150, 165, 0.6);
+    }
+
+    .water {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 42%;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.06) 0px,
+          rgba(255, 255, 255, 0.06) 2px,
+          transparent 4px,
+          transparent 16px
+        ),
+        linear-gradient(180deg, #7a001d, #250006);
+      animation: waterMove 5s linear infinite;
+    }
+
+    .island {
+      position: absolute;
+      bottom: 105px;
+      width: 420px;
+      height: 155px;
+      background: linear-gradient(180deg, #b51735, #4a0011);
+      border-radius: 52% 48% 45% 55%;
+      box-shadow:
+        0 22px 45px rgba(0, 0, 0, 0.5),
+        inset 0 12px 18px rgba(255, 255, 255, 0.08);
+      z-index: 3;
+    }
+
+    .island::before {
+      content: "";
+      position: absolute;
+      top: -25px;
+      left: 55px;
+      width: 310px;
+      height: 80px;
+      background: linear-gradient(180deg, #ff4d6d, #b51735);
+      border-radius: 50%;
+      filter: blur(1px);
+    }
+
+    .bouquet-card {
+      position: absolute;
+      bottom: 185px;
+      width: 250px;
+      height: 300px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      z-index: 4;
+      box-shadow:
+        0 0 35px rgba(255, 72, 100, 0.45),
+        inset 0 0 20px rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      animation: bouquetFloat 3.5s ease-in-out infinite;
+    }
+
+    .bouquet-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 20px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+      font-size: 1.3rem;
+      cursor: pointer;
+      z-index: 20;
+      backdrop-filter: blur(8px);
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -30px;
+      color: #ffb3c1;
+      font-size: 18px;
+      opacity: 0;
+      animation: heartRise linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-16px);
+      }
+    }
+
+    @keyframes bouquetFloat {
+      0%, 100% {
+        transform: translateY(0) rotate(-1deg);
+      }
+      50% {
+        transform: translateY(-14px) rotate(1deg);
+      }
+    }
+
+    @keyframes waterMove {
+      from {
+        background-position: 0 0;
+      }
+      to {
+        background-position: 0 80px;
+      }
+    }
+
+    @keyframes heartRise {
+      0% {
+        transform: translateY(0) scale(0.7);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-110vh) scale(1.3);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .main-page h1 {
+        font-size: 1.9rem;
+      }
+
+      .gif-box {
+        width: 240px;
+        height: 240px;
+      }
+
+      .greeting h2 {
+        font-size: 1.7rem;
+      }
+
+      .greeting p {
+        font-size: 0.95rem;
+      }
+
+      .island {
+        width: 330px;
+        height: 125px;
+      }
+
+      .bouquet-card {
+        width: 210px;
+        height: 255px;
+        bottom: 165px;
+      }
+
+      .moon {
+        width: 65px;
+        height: 65px;
+        right: 12%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <section class="main-page">
+    <h1>For My Special One ❤️</h1>
+    <p>A small flower, made with love, just for you.</p>
+
+    <div class="gif-box">
+      <!-- Local GIF -->
+      <img src="public\tumblr_42551060c0edfb479b2bf36ed1ccfbc8_41497f12_640.gif" alt="Red lily animation" />
+    </div>
+
+    <button class="tap-btn" onclick="openIsland()">Tap Me ❤️</button>
+  </section>
+
+  <section class="island-page" id="islandPage">
+    <button class="close-btn" onclick="closeIsland()">×</button>
+
+    <div class="greeting">
+      <h2>Welcome to My Little Red Island ❤️</h2>
+      <p>
+        This bouquet is for you, because you make every moment feel beautiful.
+      </p>
+    </div>
+
+    <div class="moon"></div>
+    <div class="water"></div>
+
+    <div class="bouquet-card">
+      <!-- Local bouquet image -->
+      <img src="public/Gemini_Generated_Image_n3en4tn3en4tn3en-removebg-preview.png" alt="Bouquet for you" />
+    </div>
+
+    <div class="island"></div>
+  </section>
+
+  <script>
+    const islandPage = document.getElementById("islandPage");
+
+    function openIsland() {
+      islandPage.classList.add("active");
+    }
+
+    function closeIsland() {
+      islandPage.classList.remove("active");
+    }
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = Math.random() > 0.5 ? "❤️" : "❣️";
+
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = 4 + Math.random() * 4 + "s";
+      heart.style.fontSize = 15 + Math.random() * 16 + "px";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 8000);
+    }
+
+    setInterval(createHeart, 500);
+  </script>
+</body>
+</html>
